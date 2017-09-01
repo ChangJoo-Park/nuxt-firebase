@@ -13,7 +13,11 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
-    "nuxt": "^1.0.0-rc3"
+    "firebase": "^4.3.0",
+    "nuxt": "^1.0.0-rc3",
+    "promise-polyfill": "^6.0.2",
+    "vuefire": "^1.4.3",
+    "vuex": "^2.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",

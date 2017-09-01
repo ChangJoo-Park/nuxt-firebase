@@ -1,58 +1,59 @@
 <template>
   <section class="container">
     <div>
-      <logo/>
-      <h1 class="title">
-        nuxt-firebase-example
-      </h1>
-      <h2 class="subtitle">
-        Nuxt.js project
-      </h2>
-      <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">Documentation</a>
-        <a href="https://github.com/nuxt/nuxt.js" target="_blank" class="button--grey">GitHub</a>
+      <h1>Nuxt - Firebase</h1>
+      <form @submit.prevent="submitBook">
+        <div class="form-group">
+          <label for="book-title">Title</label>
+          <input type="text" class="form-control" id="book-title" v-model="newBook.title">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      <div class="book-list row">
+        <div class="col-sm-4" v-for="book in books" :key="book['.key']">
+          <div class="card" style="width: 20rem;">
+            <img class="card-img-top" src="http://via.placeholder.com/350x350" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title">{{book.title}}</h4>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import firebase from '~/store/firebase.js'
+
+const db = firebase.app.database()
+const booksRef = db.ref('books')
 
 export default {
-  components: {
-    Logo
+  firebase: {
+    books: booksRef
+  },
+  data () {
+    return {
+      newBook: {
+        title: ''
+      }
+    }
+  },
+  methods: {
+    submitBook () {
+      booksRef.push(this.newBook)
+      this.resetNewBook()
+    },
+    resetNewBook () {
+      this.newBook = {
+        title: ''
+      }
+    }
   }
 }
 </script>
 
 <style>
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
 
-.title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>
